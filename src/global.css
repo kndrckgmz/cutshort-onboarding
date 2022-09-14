@@ -30,3 +30,31 @@
     transform: rotate(360deg);
   }
 }
+
+.slide-in {
+  transform: translateX(0);
+  animation: slide 300ms 1 linear;
+}
+
+@keyframes slide {
+  0%{
+    transform: translateX(100%);
+  }
+  100%{
+    transform: translateX(0);
+  }
+}
+
+.slide-in2 {
+  transform: translateX(0);
+  animation: slide2 300ms 1 linear;
+}
+
+@keyframes slide2 {
+  0%{
+    transform: translateX(100%);
+  }
+  100%{
+    transform: translateX(0);
+  }
+}

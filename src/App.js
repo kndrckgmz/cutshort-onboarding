@@ -12,6 +12,19 @@ const App = () => {
   const [workspaceurl, setWorkspaceUrl] = useState("")
   const [type, setType] = useState("")
 
+  const resetPage = () => {
+    let ele = document.getElementById('input-flex')
+    ele.classList.remove("max-h-0")
+    ele.classList.add("max-h-[100vh]")
+    setLoader(false)
+    setFlow(1)
+    setFullName("")
+    setDisplayName("")
+    setWorkspaceName("")
+    setWorkspaceUrl("")
+    setType("")
+  }
+
   const handleError = (id) => {
     let input = document.getElementById(id)
     input.focus()
@@ -29,21 +42,25 @@ const App = () => {
       input.classList.remove("shadow-inputError")
     }
 
-    if (fullname !== "") {
-      let input = document.getElementById('fullname')
-      reset(input)
-    }
+    if (flow === 1) {
 
-    if (displayname !== "") {
-      let input = document.getElementById('displayname')
-      reset(input)
+      if (fullname !== "") {
+        let input = document.getElementById('fullname')
+        reset(input)
+      }
+
+      if (displayname !== "") {
+        let input = document.getElementById('displayname')
+        reset(input)
+      }
     }
 
     if (workspacename !== "") {
       let input = document.getElementById('workspacename')
       reset(input)
     }
-  }, [fullname, displayname, workspacename, workspaceurl])
+    // eslint-disable-next-line
+  }, [fullname, displayname, workspacename])
 
   useEffect(() => {
     if (type !== "") {
@@ -106,9 +123,7 @@ const App = () => {
       }
 
     } else if (flow === 4) {
-      setFlow(1)
-
-      setLoader(false)
+      resetPage()
     }
   }
 
@@ -163,7 +178,7 @@ const App = () => {
                   : `Congratulations, ${fullname}!`}
           </div>
 
-          <div className="mt-1 text-neutral-500 text-sm">
+          <div className="mt-1 text-neutral-500 text-sm text-center">
             {flow === 1
               ? "You can always change them later."
               : flow === 2
@@ -173,16 +188,10 @@ const App = () => {
                   : "You have completed onboarding, you can start using Eden!"}
           </div>
         </div>
-        <div className="w-full overflow-hidden">
-          <div id='input-flex' className={`flex flex-row w-[84rem] max-h-[100vh]
-          ${flow === 1
-              ? "-translate-x-0"
-              : flow === 2
-                ? "-translate-x-[calc(100%_*_1/3)]"
-                : "-translate-x-[calc(100%_*_2/3)]"
-            }`}>
-            {/* Profile input */}
-            <div className="flex flex-col p-1 min-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
+        <div id="input-flex" className="w-full overflow-hidden max-h-[100vh]">
+          {flow === 1
+            ? // Profile input
+            <div className="flex flex-col p-1 w-full max-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
               <label className="mb-2 text-sm font-semibold">Full Name</label>
               <input
                 id='fullname'
@@ -199,70 +208,80 @@ const App = () => {
                 placeholder="Steve"
                 className="text-neutral-800 border-[1px] rounded-md text-sm py-2 px-3 outline-none focus:shadow-input" />
             </div>
-            {/* Workspace input */}
-            <div className="flex flex-col p-1 min-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
-              <label className="mb-2 text-sm font-semibold">Workspace Name</label>
-              <input
-                id='workspacename'
-                value={workspacename}
-                onChange={(e) => setWorkspaceName(e.target.value)}
-                placeholder="Eden"
-                className="text-neutral-800 border-[1px] rounded-md text-sm py-2 px-3 outline-none focus:shadow-input" />
-
-              <label className="mt-6 mb-2 text-sm font-semibold">Workspace URL
-                <div className="inline ml-1 text-neutral-400">(optional)</div></label>
-              <div className="flex flex-row w-full">
-                <div className="py-2 px-3 border-[1px] border-r-0 rounded-l-md bg-neutral-100 text-sm text-neutral-400">
-                  www.eden.com/
-                </div>
+            : flow === 2
+              ?  // Workspace input
+              <div className="slide-in flex flex-col p-1 w-full max-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
+                <label className="mb-2 text-sm font-semibold">Workspace Name</label>
                 <input
-                  id='workspaceurl'
-                  value={workspaceurl}
-                  onChange={(e) => setWorkspaceUrl(e.target.value)}
-                  placeholder="Example"
-                  className="text-neutral-800 border-[1px] flex-1 rounded-r-md text-sm py-2 px-3 outline-none focus:shadow-input" />
+                  id='workspacename'
+                  value={workspacename}
+                  onChange={(e) => setWorkspaceName(e.target.value)}
+                  placeholder="Eden"
+                  className="text-neutral-800 border-[1px] rounded-md text-sm py-2 px-3 outline-none focus:shadow-input" />
+
+                <label className="mt-6 mb-2 text-sm font-semibold">
+                  Workspace URL
+                  <div className="inline ml-1 text-neutral-400">(optional)</div>
+                </label>
+                <div className="flex flex-row w-full">
+                  <div className="py-2 px-3 border-[1px] border-r-0 rounded-l-md bg-neutral-100 text-sm text-neutral-400">
+                    www.eden.com/
+                  </div>
+                  <input
+                    id='workspaceurl'
+                    value={workspaceurl}
+                    onChange={(e) => setWorkspaceUrl(e.target.value)}
+                    placeholder="Example"
+                    className="text-neutral-800 border-[1px] flex-1 rounded-r-md text-sm py-2 px-3 outline-none focus:shadow-input" />
+                </div>
               </div>
-            </div>
-            {/* Team input */}
-            <div className="relative overflow-hidden flex flex-row flex-wrap gap-4 p-1 min-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
-              <input
-                onChange={(e) => setType(e.target.value)}
-                type='radio'
-                name='type'
-                id='single'
-                value='single'
-                className='hidden' />
-              <label htmlFor='single'
-                className={`flex flex-col w-[calc(50%_-_0.5rem)] p-6 pt-4 border-[1px] rounded-md cursor-pointer
+              : flow === 3
+              && <div className="slide-in2 relative overflow-hidden flex flex-row flex-wrap gap-4 p-1 w-full max-w-[calc(30rem_-_2rem)] mb-4 text-neutral-500">
+                <input
+                  onChange={(e) => setType(e.target.value)}
+                  type='radio'
+                  name='type'
+                  id='single'
+                  value='single'
+                  className='hidden' />
+                <label htmlFor='single'
+                  className={`flex flex-col w-full sm:w-[calc(50%_-_0.5rem)] p-6 pt-4 border-[1px] rounded-md cursor-pointer
                 ${type === 'single'
-                    ? "border-primary"
-                    : "border-neutral-200"}`}>
-                <img src="/icons/single.svg" alt='single' className="h-12 w-12" />
-                <div className="font-bold text-black my-2">For myself</div>
-                <div>Write better. Think more clearly. Stay organized.</div>
-              </label>
-              <input
-                onChange={(e) => setType(e.target.value)}
-                type='radio'
-                name='type'
-                id='team'
-                value='team'
-                className='hidden' />
-              <label htmlFor='team'
-                className={`flex flex-col w-[calc(50%_-_0.5rem)] p-6 pt-4 border-[1px] rounded-md cursor-pointer
+                      ? "border-primary"
+                      : "border-neutral-200"}`}>
+                  <img src={`${type === 'single'
+                    ? "/icons/single-primary.svg"
+                    : "/icons/single.svg"}`}
+                    alt='single'
+                    className="h-12 w-12" />
+                  <div className="font-bold text-black my-2">For myself</div>
+                  <div>Write better. Think more clearly. Stay organized.</div>
+                </label>
+                <input
+                  onChange={(e) => setType(e.target.value)}
+                  type='radio'
+                  name='type'
+                  id='team'
+                  value='team'
+                  className='hidden' />
+                <label htmlFor='team'
+                  className={`flex flex-col w-full sm:w-[calc(50%_-_0.5rem)] p-6 pt-4 border-[1px] rounded-md cursor-pointer
                 ${type === 'team'
-                    ? "border-primary"
-                    : "border-neutral-200"}`}>
-                <img src="/icons/team.svg" alt='team' className="h-12 w-12" />
-                <div className="font-bold text-black my-2">With my team</div>
-                <div>Wikis, docs, tasks &amp; projects, all in one place.</div>
-              </label>
-              <div id='typeError' className="translate-y-[5rem] pointer-events-none absolute bottom-0 left-0 p-2 text-center text-sm bg-red-600 text-white w-full rounded-md">
-                Please select one of the above.
-              </div>
-            </div>
-          </div>
+                      ? "border-primary"
+                      : "border-neutral-200"}`}>
+                  <img src={`${type === 'team'
+                    ? "/icons/team-primary.svg"
+                    : "/icons/team.svg"}`}
+                    alt='team' className="h-12 w-12" />
+                  <div className="font-bold text-black my-2">With my team</div>
+                  <div>Wikis, docs, tasks &amp; projects, all in one place.</div>
+                </label>
+                <div id='typeError' className="translate-y-[5rem] pointer-events-none absolute bottom-0 left-0 p-2 text-center text-sm bg-red-600 text-white w-full rounded-md">
+                  Please select one of the above.
+                </div>
+              </div>}
         </div>
+
         <button
           onClick={handleFlow}
           className="grid place-items-center bg-primary text-neutral-100 text-[1rem] p-2 py-3 rounded-md min-w-full">
