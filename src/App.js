@@ -119,7 +119,7 @@ const App = () => {
         setTimeout(() => {
           setFlow(4)
           setLoader(false)
-        }, 2000)
+        }, 3000)
       }
 
     } else if (flow === 4) {
@@ -174,8 +174,11 @@ const App = () => {
               : flow === 2
                 ? "Let's set up a home for all your work"
                 : flow === 3
-                  ? "How are you planing to use Eden?"
-                  : `Congratulations, ${fullname}!`}
+                  ? loader === true
+                    ? "Creating your new Workspace"
+                    : "How are you planing to use Eden?"
+                  : `Congratulations, ${fullname}!`
+            }
           </div>
 
           <div className="mt-1 text-neutral-500 text-sm text-center">
@@ -184,8 +187,11 @@ const App = () => {
               : flow === 2
                 ? "You can always create another workspace later."
                 : flow === 3
-                  ? "We'll streamline you setup experience accordingly."
-                  : "You have completed onboarding, you can start using Eden!"}
+                  ? loader === true
+                    ? "..."
+                    : "We'll streamline you setup experience accordingly."
+                  : "You have completed onboarding, you can start using Eden!"
+            }
           </div>
         </div>
         <div id="input-flex" className="w-full overflow-hidden max-h-[100vh]">
