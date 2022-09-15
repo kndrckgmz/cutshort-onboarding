@@ -223,8 +223,9 @@ const App = () => {
                   Workspace URL
                   <div className="inline ml-1 text-neutral-400">(optional)</div>
                 </label>
-                <div className="flex flex-row w-full">
-                  <div className="py-2 px-3 border-[1px] border-r-0 rounded-l-md bg-neutral-100 text-sm text-neutral-400">
+                <div className="relative">
+                  <div id='urlprefix' className="absolute top-0 left-0 w-fit
+                  py-2 px-3 border-[1px] rounded-l-md bg-neutral-100 text-sm text-neutral-400">
                     www.eden.com/
                   </div>
                   <input
@@ -232,7 +233,8 @@ const App = () => {
                     value={workspaceurl}
                     onChange={(e) => setWorkspaceUrl(e.target.value)}
                     placeholder="Example"
-                    className="text-neutral-800 border-[1px] flex-1 rounded-r-md text-sm py-2 px-3 outline-none focus:shadow-input" />
+                    className={`py-2 pr-3 pl-[145px]
+                    text-neutral-800 w-full border-[1px] rounded-md text-sm outline-none focus:shadow-input`} />
                 </div>
               </div>
               : flow === 3
